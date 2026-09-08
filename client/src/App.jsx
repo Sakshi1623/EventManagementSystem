@@ -1,26 +1,17 @@
 import Navbar from "./components/Navbar";
-import EventCard from "./components/EventCard";
+import Home from "./pages/Home";
+
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
-
+    <div>
       <Navbar />
-
-      <main className="py-10 px-6">
-
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
-          Upcoming Events
-        </h1>
-
-        <div className="flex justify-center">
-          <EventCard />
-        </div>
-
-      </main>
-
+      <Home />
     </div>
   );
 }
 
+
 export default App;
+
+
