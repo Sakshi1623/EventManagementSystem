@@ -1,11 +1,10 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 function Login() {
-  const { login } = useContext(AuthContext);
-
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -17,73 +16,55 @@ function Login() {
 
   function handleChange(event) {
     const { name, value } = event.target;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!formData.email || !formData.password) {
+    if (!formData.email.trim() || !formData.password) {
       setMessage("Please fill in all fields.");
       return;
     }
 
-    login(formData.email);
-
+    // Temporary frontend-only login; backend authentication comes later.
+    login(formData.email.trim());
     setMessage("Login successful!");
 
-    setTimeout(() => {
-      navigate("/");
-    }, 500);
+    setTimeout(() => navigate("/"), 500);
   }
 
   return (
     <div className="min-h-screen bg-slate-100 px-6 py-16">
-
       <div className="mx-auto max-w-md rounded-xl bg-white p-8 shadow-md">
-
-        <h1 className="text-3xl font-bold text-slate-900">
-          Login
-        </h1>
+        <h1 className="text-3xl font-bold text-slate-900">Login</h1>
 
         <p className="mt-2 text-slate-600">
           Login to manage your event registrations.
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 space-y-4"
-        >
-
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label className="mb-1 block font-medium">
-              Email
-            </label>
-
+            <label className="mb-1 block font-medium">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
+              required
               placeholder="Enter your email"
               className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
           <div>
-            <label className="mb-1 block font-medium">
-              Password
-            </label>
-
+            <label className="mb-1 block font-medium">Password</label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              required
               placeholder="Enter your password"
               className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
             />
@@ -91,7 +72,7 @@ function Login() {
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-semibold text-white transition hover:bg-indigo-700"
+            className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-semibold text-white hover:bg-indigo-700"
           >
             Login
           </button>
@@ -101,11 +82,8 @@ function Login() {
               {message}
             </p>
           )}
-
         </form>
-
       </div>
-
     </div>
   );
 }

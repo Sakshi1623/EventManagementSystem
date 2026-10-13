@@ -1,3 +1,4 @@
+
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
@@ -9,38 +10,31 @@ function AuthProvider({ children }) {
     const savedUser = localStorage.getItem("eventHubUser");
 
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch {
+        localStorage.removeItem("eventHubUser");
+      }
     }
   }, []);
 
   function login(email) {
     const loggedInUser = {
       name: email.split("@")[0],
-      email: email,
+      email,
     };
 
     setUser(loggedInUser);
-
-    localStorage.setItem(
-      "eventHubUser",
-      JSON.stringify(loggedInUser)
-    );
+    localStorage.setItem("eventHubUser", JSON.stringify(loggedInUser));
   }
 
   function logout() {
     setUser(null);
-
     localStorage.removeItem("eventHubUser");
   }
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 import EventCard from "../components/EventCard";
@@ -27,7 +28,6 @@ function Events() {
   return (
     <div className="min-h-screen bg-slate-100 px-6 py-16">
       <div className="mx-auto max-w-7xl">
-
         <h1 className="text-4xl font-bold text-slate-900">
           Upcoming Events
         </h1>
@@ -39,9 +39,7 @@ function Events() {
         {loading && <Loading />}
 
         {!loading && error && (
-          <p className="mt-6 text-red-600">
-            {error}
-          </p>
+          <p className="mt-6 text-red-600">{error}</p>
         )}
 
         {!loading && !error && events.length === 0 && (
@@ -64,7 +62,6 @@ function Events() {
             ))}
           </div>
         )}
-
       </div>
     </div>
   );

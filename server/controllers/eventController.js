@@ -1,3 +1,4 @@
+
 let events = [
   {
     id: 1,
@@ -25,49 +26,30 @@ let events = [
   },
 ];
 
-// GET /api/events
 function getEvents(req, res) {
   res.status(200).json(events);
 }
 
-// GET /api/events/:id
 function getEventById(req, res) {
   const id = Number(req.params.id);
-
   const event = events.find((event) => event.id === id);
 
   if (!event) {
-    return res.status(404).json({
-      message: "Event not found",
-    });
+    return res.status(404).json({ message: "Event not found" });
   }
 
   res.status(200).json(event);
 }
 
-// POST /api/events
 function createEvent(req, res) {
-  const body = req.body;
-
-  if (!body || typeof body !== "object" || Array.isArray(body)) {
-    return res.status(400).json({
-      message: "All event fields are required",
-    });
-  }
-
-  const { title, description, date, time, location } = body;
+  const { title, description, date, time, location } = req.body;
 
   if (
-    typeof title !== "string" ||
-    !title.trim() ||
-    typeof description !== "string" ||
-    !description.trim() ||
-    typeof date !== "string" ||
-    !date.trim() ||
-    typeof time !== "string" ||
-    !time.trim() ||
-    typeof location !== "string" ||
-    !location.trim()
+    !title?.trim() ||
+    !description?.trim() ||
+    !date?.trim() ||
+    !time?.trim() ||
+    !location?.trim()
   ) {
     return res.status(400).json({
       message: "All event fields are required",
@@ -93,39 +75,22 @@ function createEvent(req, res) {
   });
 }
 
-// PUT /api/events/:id
 function updateEvent(req, res) {
   const id = Number(req.params.id);
-
   const index = events.findIndex((event) => event.id === id);
 
   if (index === -1) {
-    return res.status(404).json({
-      message: "Event not found",
-    });
+    return res.status(404).json({ message: "Event not found" });
   }
 
-  const body = req.body;
-
-  if (!body || typeof body !== "object" || Array.isArray(body)) {
-    return res.status(400).json({
-      message: "All event fields are required",
-    });
-  }
-
-  const { title, description, date, time, location } = body;
+  const { title, description, date, time, location } = req.body;
 
   if (
-    typeof title !== "string" ||
-    !title.trim() ||
-    typeof description !== "string" ||
-    !description.trim() ||
-    typeof date !== "string" ||
-    !date.trim() ||
-    typeof time !== "string" ||
-    !time.trim() ||
-    typeof location !== "string" ||
-    !location.trim()
+    !title?.trim() ||
+    !description?.trim() ||
+    !date?.trim() ||
+    !time?.trim() ||
+    !location?.trim()
   ) {
     return res.status(400).json({
       message: "All event fields are required",
@@ -147,25 +112,19 @@ function updateEvent(req, res) {
   });
 }
 
-// DELETE /api/events/:id
 function deleteEvent(req, res) {
   const id = Number(req.params.id);
+  const event = events.find((event) => event.id === id);
 
-  const index = events.findIndex((event) => event.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({
-      message: "Event not found",
-    });
+  if (!event) {
+    return res.status(404).json({ message: "Event not found" });
   }
-
-  const deletedEvent = events[index];
 
   events = events.filter((event) => event.id !== id);
 
   res.status(200).json({
     message: "Event deleted successfully",
-    event: deletedEvent,
+    event,
   });
 }
 
