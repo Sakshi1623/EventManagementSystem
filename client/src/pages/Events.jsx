@@ -1,6 +1,5 @@
 
 import { useEffect, useState } from "react";
-
 import EventCard from "../components/EventCard";
 import Loading from "../components/Loading";
 import { getEvents } from "../services/api";
@@ -56,8 +55,8 @@ function Events() {
                 title={event.title}
                 description={event.description}
                 date={event.date}
-                location={event.location}
                 time={event.time}
+                location={event.location}
               />
             ))}
           </div>
